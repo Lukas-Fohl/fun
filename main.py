@@ -20,6 +20,24 @@ class v2:
     def print(self):
         print("x:\t"+ str(self.x) + "\t y:\t" + str(self.y))
 
+    def getRoundedPos(self):
+        if float(self.x)%1.0 == 0:
+            tempX = self.x
+        else:
+            tempX = (self.x - (float(self.x)%1.0)) + 1
+
+        if float(self.y)%1.0 == 0:
+            tempY = self.y
+        else:
+            tempY = (self.y - (float(self.y)%1.0)) + 1
+
+        return v2(tempX,tempY)
+    
+    def setRoundedPos(self):
+        self.x = self.getRoundedPos().x
+        self.y = self.getRoundedPos().y
+        return
+
 MAX_DIS = 20
 
 startPos = v2(2,2)
@@ -116,7 +134,7 @@ def main():
 
     #TODO 
     #   do for all directions   --> make not stupid
-    #   check if is block       --> do map -> round
+    #   check if is block       --> do map -> round(done)
     #   check distance          done
     #   get min                 done
 
@@ -139,7 +157,8 @@ def main():
 
     return
 
-
+def hasBlock(positionToSearch:v2) -> bool:
+    return False
 
 def rad2deg(input: float) -> float:
     return input / (math.pi/180.0)
