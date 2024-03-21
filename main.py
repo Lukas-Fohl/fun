@@ -1,4 +1,5 @@
 import math
+import random
 #import pygame
 
 class v3:
@@ -38,17 +39,51 @@ class v2:
         self.y = self.getRoundedPos().y
         return
 
+class map:
+    content: [[bool]]
+    def __init__(self):
+        #open and load from path
+        return
+
+    def getBlock(self, positionToSearch:v2) -> bool:
+        if random.randint(1,10) == 2:
+            return True
+        return False
+        try:
+            return self.content[positionToSearch.x][positionToSearch.y]
+        except:
+            return
+    
+    def setMap(self,positionToChange:v2,ContentSet: bool) -> None:
+        try:
+            self.content[positionToChange.x][positionToChange.y]
+        except:
+            return
+        return
+
+
 MAX_DIS = 20
 
-startPos = v2(2,2)
-
 def main():
+
+    #TODO 
+    #   do for all directions   --> make not stupid
+    #   check if is block       --> do map -> round(done)
+    #   check distance          done
+    #   get min                 done
+
+    ray(v2(2,2),35,map()).print()
+
+    return
+
+def ray(startPos: v2, angleInput: float, mapInput:map) -> v2:
 
     #found hits
     found = []
 
     #view angle 0..360
     angle = 135
+    angle = angleInput % 360
     if angle & 90 == 0:
         return
 
@@ -63,7 +98,7 @@ def main():
             pos.x = float(xIter)
             pos.y = math.tan(deg2rad(angle)) * (xIter-startPos.x)
             pos.y += float(startPos.y)
-            pos.print()
+            #pos.print()
             found.append(v2(pos.x,pos.y))
 
         #horizontal hit
@@ -71,7 +106,7 @@ def main():
             pos.y = float(yIter)
             pos.x = float(yIter-startPos.y)/math.tan(deg2rad(angle))
             pos.x += float(startPos.x)
-            pos.print()
+            #pos.print()
             found.append(v2(pos.x,pos.y))
 
     elif angle >= 90.0 and angle < 180.0:
@@ -82,7 +117,7 @@ def main():
             pos.x = float(startPos.x - (xIter - startPos.x))
             pos.y = math.tan(deg2rad(angle)) * ((xIter-startPos.x)*-1)
             pos.y += float(startPos.y)
-            pos.print()
+            #pos.print()
             found.append(v2(pos.x,pos.y))
 
         #horizontal hit
@@ -90,7 +125,7 @@ def main():
             pos.y = float(yIter)
             pos.x = float(yIter-startPos.y)/math.tan(deg2rad(angle))
             pos.x += float(startPos.x)
-            pos.print()
+            #pos.print()
             found.append(v2(pos.x,pos.y))
 
     elif angle >= 180.0 and angle < 270.0:
@@ -101,7 +136,7 @@ def main():
             pos.x = float(startPos.x - (xIter - startPos.x))
             pos.y = math.tan(deg2rad(angle)) * ((xIter-startPos.x)*-1)
             pos.y += float(startPos.y)
-            pos.print()
+            #pos.print()
             found.append(v2(pos.x,pos.y))
 
         #horizontal hit
@@ -109,7 +144,7 @@ def main():
             pos.y = float(startPos.y - (yIter - startPos.y))
             pos.x = (float(yIter-startPos.y)*-1)/math.tan(deg2rad(angle))
             pos.x += float(startPos.x)
-            pos.print()
+            #pos.print()
             found.append(v2(pos.x,pos.y))
 
     elif angle >= 270.0 and angle < 360.0:
@@ -119,7 +154,7 @@ def main():
             pos.x = float(xIter)
             pos.y = math.tan(deg2rad(angle)) * (xIter-startPos.x)
             pos.y += float(startPos.y)
-            pos.print()
+            #pos.print()
             found.append(v2(pos.x,pos.y))
 
         #horizontal hit
@@ -127,18 +162,17 @@ def main():
             pos.y = float(startPos.y - (yIter - startPos.y))
             pos.x = (float(yIter-startPos.y)*-1)/math.tan(deg2rad(angle))
             pos.x += float(startPos.x)
-            pos.print()
+            #pos.print()
             found.append(v2(pos.x,pos.y))
 
+    #remove not found
+    remIndx = []
+    for i in range(len(found)):
+        if not mapInput.getBlock(found[i]):
+            remIndx.append(i)
 
-
-    #TODO 
-    #   do for all directions   --> make not stupid
-    #   check if is block       --> do map -> round(done)
-    #   check distance          done
-    #   get min                 done
-
-
+    for i in reversed(remIndx):
+        found.pop(i)
 
     #check min dis
     hitpos = v2(0,0)
@@ -151,17 +185,16 @@ def main():
             hitpos = i
             currentMin = dis
 
-    print("")
-    print(currentMin)
-    hitpos.print()
+    #print("")
+    #print(currentMin)
+    #hitpos.print()
 
-    return
+    return hitpos
 
-def hasBlock(positionToSearch:v2) -> bool:
-    return False
 
+#MATH UTIL
 def rad2deg(input: float) -> float:
-    return input / (math.pi/180.0)
+    return input / (math.pi / 180.0)
 
 def deg2rad(input: float) -> float:
     return input * (math.pi / 180.0)
