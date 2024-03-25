@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>mapEditor</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <script src='main.js'></script>
+    </head>
+    <body>
+        <div id="body">
+            <div id="field">
+                <ul id="main_list">    
+                </ul>
+            </div>
+        </div>
+        <div id="no1">
+            <ul>
+                <li>
+                    <button class="des_btn" role="button" id="des1" onclick="changeState(this.id)">....</button>
+                </li>
+                <li>
+                    <div id="choice_background" style="background-color: #fff; position: relative; left: 10px;">
+                        <p style= "font-family: Open Sans, sans-serif;">1</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="no2">
+            <ul>
+                <li>
+                    <button class="des_btn" role="button" id="des2" onclick="changeState(this.id)">....</button>
+                </li>
+                <li>
+                    <div id="choice_background" style="background-color: #fff; position: relative; left: 10px;">
+                        <p style= "font-family: Open Sans, sans-serif;">2</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="no3">
+            <ul>
+                <li>
+                    <button class="des_btn" role="button" id="des3" onclick="changeState(this.id)">....</button>
+                </li>
+                <li>
+                    <div id="choice_background" style="background-color: #fff; position: relative; left: 10px;">
+                        <p style= "font-family: Open Sans, sans-serif;">3</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="no4">
+            <ul>
+                <li>
+                    <button class="des_btn" role="button" id="des4" onclick="changeState(this.id)">....</button>
+                </li>
+                <li>
+                    <div id="choice_background" style="background-color: #fff; position: relative; left: 10px;">
+                        <p style= "font-family: Open Sans, sans-serif;">4</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="no5">
+            <ul>
+                <li>
+                    <button class="des_btn" role="button" id="des5" onclick="changeState(this.id)">....</button>
+                </li>
+                <li>
+                    <div id="choice_background" style="background-color: #fff; position: relative; left: 10px;">
+                        <p style= "font-family: Open Sans, sans-serif;">5</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="no6">
+            <ul>
+                <li>
+                    <button class="des_btn" role="button" id="des6" onclick="changeState(this.id)">....</button>
+                </li>
+                <li>
+                    <div id="choice_background" style="background-color: #fff; position: relative; left: 10px;">
+                        <p style= "font-family: Open Sans, sans-serif;">6</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="player_spawn">
+            <ul>
+                <li>
+                    <button class="des_btn" role="button" id="des7" onclick="changeState(this.id)">....</button>
+                </li>
+                <li>
+                    <div id="choice_background" style="background-color: #fff; position: relative; left: 10px;">
+                        <p style= "font-family: Open Sans, sans-serif;">player spawn</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="clear">
+            <ul>
+                <li>
+                    <button class="des_btn" role="button" id="des10" onclick="reset()">clear</button>
+                </li>
+                <li>
+                    
+                </li>
+            </ul>
+        </div>
+        <div id="build">
+            <ul>
+                <li>
+                    <button class="des_btn" role="button" id="des10" onclick="exporting()">build</button>
+                </li>
+                <li>
+                    
+                </li>
+            </ul>
+        </div>
+        <button id="color_chosen_show" style="position: absolute; right: 20%; top: 20%; height: 50px; width: 50px;"></button>
+        <p id="output"></p>
+    <style>
+        .std_button
+        {
+            margin-left: 1px;
+            background-color: black;
+            left: 10%;
+            top: 0%;
+            bottom: 0%;
+            height: 15px;
+            width: 5px;
+            position: relative;
+        }
+        ul 
+        {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        li 
+        {
+            margin: 0;
+            padding: 0;
+            float: left;
+        }
+        body
+        {
+            background-color: rgb(23, 20, 54);
+        }
+        #no1
+        {
+            left: 50%;
+            top: 15%;
+            position: absolute;
+        }
+        #no2
+        {
+            left: 50%;
+            top: 20%;
+            position: absolute;
+        }
+        #no3
+        {
+            left: 50%;
+            top: 25%;
+            position: absolute;
+        }
+        #no4
+        {
+            left: 50%;
+            top: 30%;
+            position: absolute;
+        }
+        #no5
+        {
+            left: 50%;
+            top: 35%;
+            position: absolute;
+        }
+        #no6
+        {
+            left: 50%;
+            top: 40%;
+            position: absolute;
+        }
+        #player_spawn
+        {
+            left: 50%;
+            top: 45%;
+            position: absolute;
+        }
+        #field
+        {
+            left: 2%;
+            top: 0%;
+            height: 80%;
+            width: 60%;
+            position: absolute;
+        }
+        #clear
+        {
+            left: 50%;
+            top: 60%;
+            position: absolute;
+        }
+        #build
+        {
+            right: 30%;
+            top: 60%;
+            position: absolute;
+        }
+        #chosen
+        {
+            right: 20%;
+            top: 25%;
+            position: absolute;
+        }
+        #output
+        {
+            right: 30%;
+            top: 70%;
+            position: absolute;
+        }
+        .des_btn{
+            font-family: "Helvetica", sans-serif;
+            font-size: 16px;
+            letter-spacing: 2px;
+            text-decoration: none;
+            text-transform: uppercase;
+            color: #000;
+            cursor: pointer;
+            border: 3px solid;
+            padding: 0.25em 0.5em;
+            box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+            position: relative;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }           
+        .des_btn:active {
+          box-shadow: 0px 0px 0px 0px;
+          top: 5px;
+          left: 5px;
+        }
+
+        @media (min-width: 768px) {
+          .des_btn{
+            padding: 0.25em 0.75em;
+          }
+        } 
+        </style>
+        <script type = "text/javascript" >makeGrid()</script>
+</body>
+</html>

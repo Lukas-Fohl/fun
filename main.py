@@ -40,39 +40,55 @@ class v2:
         return
 
 class map:
-    content: [[bool]]
+    width: int
+    height: int
+    content: [[int]]
     def __init__(self):
         #open and load from path
         return
 
-    def getBlock(self, positionToSearch:v2) -> bool:
-        if random.randint(1,10) == 2:
-            return True
-        return False
-        try:
-            return self.content[positionToSearch.x][positionToSearch.y]
-        except:
-            return
-    
-    def setMap(self,positionToChange:v2,ContentSet: bool) -> None:
-        try:
-            self.content[positionToChange.x][positionToChange.y]
-        except:
-            return
+    def defMapFromPath(self, path:str):
+        with open(path) as mapFile:
+            mapStr = mapFile.read()
+            self.width = int(mapStr.split("\n")[0]) -1
+            self.height = int(mapStr.split("\n")[1]) -1
+            mapStr = mapStr.split("\n")[2]
+            self.content = [[0] * self.height] * self.width
+            mapArray = mapStr.split(",")
+            for y in range(self.height):
+                for x in range(self.width):
+                    self.content[x][y] = int(mapArray[self.width * y + x])
         return
+
+    def getBlock(self, positionToSearch:v2) -> bool:
+        #positionToSearch = positionToSearch.getRoundedPos()
+
+        #return self.content[int(positionToSearch.x)][int(positionToSearch.y)] != 1
+        if int(positionToSearch.x) < self.width and int(positionToSearch.y) < self.height:
+            return (self.content[int(positionToSearch.x)][int(positionToSearch.y)] != 1)
+    
+    def setBlock(self,positionToChange:v2,ContentSet: int) -> None:
+        positionToChange = positionToChange.getRoundedPos()
+
+        self.content[int(positionToChange.x)][int(positionToChange.y)] = ContentSet
+
+        if int(positionToChange.x) < self.width and int(positionToChange.y) < self.height:
+            self.content[int(positionToChange.x)][int(positionToChange.y)] = ContentSet
 
 
 MAX_DIS = 20
 
 def main():
 
-    #TODO 
-    #   do for all directions   --> make not stupid
-    #   check if is block       --> do map -> round(done)
+    #TODO
+    #   do for all directions   --> make not stupid - no chance
+    #   check if is block       --> done
     #   check distance          done
     #   get min                 done
 
-    ray(v2(2,2),35,map()).print()
+    tempMap = map()
+    tempMap.defMapFromPath(".\\file.map")
+    ray(v2(2,2),45,tempMap).print()
 
     return
 
@@ -173,6 +189,10 @@ def ray(startPos: v2, angleInput: float, mapInput:map) -> v2:
 
     for i in reversed(remIndx):
         found.pop(i)
+
+    #TODO:
+    #check for hit earlier --> reduce clac
+    #refactor pls
 
     #check min dis
     hitpos = v2(0,0)
