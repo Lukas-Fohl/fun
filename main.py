@@ -22,6 +22,7 @@ class v2:
         print("x:\t"+ str(self.x) + "\t y:\t" + str(self.y))
 
     def getRoundedPos(self):
+        return v2(int(self.x),int(self.y))
         if float(self.x)%1.0 == 0:
             tempX = self.x
         else:
@@ -39,10 +40,14 @@ class v2:
         self.y = self.getRoundedPos().y
         return
 
+    def len(self):
+        return math.sqrt(self.x**2 + self.y**2)
+
 class map:
     width: int
     height: int
-    content: [[int]]
+    content: [[0 for i in range(50)] for j in range(50)]
+
     def __init__(self):
         #open and load from path
         return
@@ -52,12 +57,18 @@ class map:
             mapStr = mapFile.read()
             self.width = int(mapStr.split("\n")[0]) -1
             self.height = int(mapStr.split("\n")[1]) -1
-            mapStr = mapStr.split("\n")[2]
-            self.content = [[0] * self.height] * self.width
-            mapArray = mapStr.split(",")
+            self.content = [[0 for i in range(self.width)] for j in range(self.height)]
+            #+2 offset
             for y in range(self.height):
+                #tempLN = ""
                 for x in range(self.width):
-                    self.content[x][y] = int(mapArray[self.width * y + x])
+                    tempVal = mapStr.split("\n")[2+y].split(",")[x]
+                    self.content[x][y] = int(tempVal)
+                    #tempLN += tempVal
+                    #print("x:" + str(x) + " y:" + str(y) + "  = " + tempVal)
+                #print(tempLN)
+            #print("\n")
+
         return
 
     def getBlock(self, positionToSearch:v2) -> bool:
@@ -65,7 +76,8 @@ class map:
 
         #return self.content[int(positionToSearch.x)][int(positionToSearch.y)] != 1
         if int(positionToSearch.x) < self.width and int(positionToSearch.y) < self.height:
-            return (self.content[int(positionToSearch.x)][int(positionToSearch.y)] != 1)
+            if int(positionToSearch.x) > 0 and int(positionToSearch.y) > 0:
+                return (self.content[int(positionToSearch.x)][int(positionToSearch.y)] != 1)
     
     def setBlock(self,positionToChange:v2,ContentSet: int) -> None:
         positionToChange = positionToChange.getRoundedPos()
@@ -75,8 +87,17 @@ class map:
         if int(positionToChange.x) < self.width and int(positionToChange.y) < self.height:
             self.content[int(positionToChange.x)][int(positionToChange.y)] = ContentSet
 
+    def printMap(self) -> None:
+        for y in range(self.height):
+            tempLN = ""
+            for x in range(self.width):
+                tempLN += str(self.content[x][y])
+            print(tempLN)
+        print("\n")
+
 
 MAX_DIS = 20
+FOV = 90
 
 def main():
 
@@ -88,7 +109,11 @@ def main():
 
     tempMap = map()
     tempMap.defMapFromPath(".\\file.map")
-    ray(v2(2,2),45,tempMap).print()
+    tempMap.printMap()
+    currentAngle = 45
+    for i in range(int(currentAngle - (FOV/2)), int(currentAngle + (FOV/2))):
+        print(ray(v2(2,2),i,tempMap).len())
+        #print size
 
     return
 
@@ -97,11 +122,14 @@ def ray(startPos: v2, angleInput: float, mapInput:map) -> v2:
     #found hits
     found = []
 
+    if(angleInput < 0):
+        angleInput = (angleInput%360)
+
     #view angle 0..360
     angle = 135
     angle = angleInput % 360
     if angle & 90 == 0:
-        return
+        return startPos
 
     #current found hit
     pos = v2(0,0)

@@ -110,10 +110,11 @@ function exporting(){
     let output = "";
     output += String(widthMax) + String("\n");
     output += String(heightMax) + String("\n");
-    for(let y = 0; y<heightMax; y++){
-        for(let x = 0; x<widthMax; x++){
+    for(let x = widthMax-1; x >= 0; x--){
+        for(let y = 0; y < heightMax; y++){
             output  += `${dateBtn[x][y]},`;
         }
+        output += "\n";
         //output = output.substring(0, output.length - 1);
     }
     output = output.substring(0, output.length - 1);
