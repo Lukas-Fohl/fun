@@ -23,15 +23,15 @@ class v2:
 
     def getRoundedPos(self):
         return v2(int(self.x),int(self.y))
-        if float(self.x)%1.0 == 0:
-            tempX = self.x
-        else:
-            tempX = (self.x - (float(self.x)%1.0)) + 1
+        #if float(self.x)%1.0 == 0:
+        #    tempX = self.x
+        #else:
+        #    tempX = (self.x - (float(self.x)%1.0)) + 1
 
-        if float(self.y)%1.0 == 0:
-            tempY = self.y
-        else:
-            tempY = (self.y - (float(self.y)%1.0)) + 1
+        #if float(self.y)%1.0 == 0:
+        #    tempY = self.y
+        #else:
+        #    tempY = (self.y - (float(self.y)%1.0)) + 1
 
         return v2(tempX,tempY)
     
@@ -72,20 +72,22 @@ class map:
         return
 
     def getBlock(self, positionToSearch:v2) -> bool:
-        #positionToSearch = positionToSearch.getRoundedPos()
+        positionToSearch = positionToSearch.getRoundedPos()
 
         #return self.content[int(positionToSearch.x)][int(positionToSearch.y)] != 1
         if int(positionToSearch.x) < self.width and int(positionToSearch.y) < self.height:
             if int(positionToSearch.x) > 0 and int(positionToSearch.y) > 0:
                 return (self.content[int(positionToSearch.x)][int(positionToSearch.y)] != 1)
+        return True
     
     def setBlock(self,positionToChange:v2,ContentSet: int) -> None:
         positionToChange = positionToChange.getRoundedPos()
 
-        self.content[int(positionToChange.x)][int(positionToChange.y)] = ContentSet
+        #self.content[int(positionToChange.x)][int(positionToChange.y)] = ContentSet
 
         if int(positionToChange.x) < self.width and int(positionToChange.y) < self.height:
-            self.content[int(positionToChange.x)][int(positionToChange.y)] = ContentSet
+            if int(positionToChange.x) > 0 and int(positionToChange.y) > 0:
+                self.content[int(positionToChange.x)][int(positionToChange.y)] = ContentSet
 
     def printMap(self) -> None:
         for y in range(self.height):
@@ -109,7 +111,7 @@ def main():
 
     tempMap = map()
     tempMap.defMapFromPath(".\\file.map")
-    tempMap.printMap()
+    #tempMap.printMap()
     currentAngle = 45
     for i in range(int(currentAngle - (FOV/2)), int(currentAngle + (FOV/2))):
         print(ray(v2(2,2),i,tempMap).len())
