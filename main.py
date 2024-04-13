@@ -109,7 +109,7 @@ def main():
 
     surface = pygame.display.set_mode(size)
     
-    rectColor = (255,0,0)
+    rectColor = (200,255,200)
 
     #TODO
     #   do for all directions   --> make not stupid - no chance
