@@ -152,7 +152,7 @@ def ray(startPos: v2, angleInput: float, mapInput:map) -> v2:
     found = []
 
     while(angleInput < 0):
-        angleInput = 360 + angleInput
+        angleInput = 360 - angleInput
 
     #view angle 0..360
     #angle = 135
