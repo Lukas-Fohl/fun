@@ -118,7 +118,7 @@ def main():
     #   get min                 done
 
     tempMap = map()
-    tempMap.defMapFromPath(".\\file.map")
+    tempMap.defMapFromPath("./file.map")
     #tempMap.printMap()
 
     currentAngle = 44
@@ -127,20 +127,30 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                sys.exit()
+                exit()
         points = [0]
+        curentAngleNormal = 0
         for i in range(int(currentAngle - (FOV/2)), int(currentAngle + (FOV/2))+1):
             #print(ray(v2(2,2),i,tempMap).len())
+
             if(ray(v2(2,2),i,tempMap).len() < 0.01):
                 dis_ = (ray(v2(2,2),i-2,tempMap).len() + ray(v2(2,2),i+2,tempMap).len())/2
                 points.append(dis_)
                 continue
-            points.append(ray(v2(2,2),i,tempMap).len())
-            #print size
+
+            disRay = ray(v2(2,2),i,tempMap).len()
+            hyp = 1.0/math.cos(deg2rad(curentAngleNormal))
+            disRay = disRay * 1.0/hyp
+            points.append(disRay)
+            curentAngleNormal += 1
+
         for i in range(FOV):
             pygame.draw.rect(surface, rectColor, pygame.Rect((i/FOV)*size[0], size[1]/2-((printScale*(points[i]))/2), size[0]/FOV+1, printScale*(points[i])))
+
         pygame.display.update()
+
         #pygame.display.flip()
+
         currentAngle += 0.1
         surface.fill((0,0,0))
 
@@ -151,13 +161,13 @@ def ray(startPos: v2, angleInput: float, mapInput:map) -> v2:
     #found hits
     found = []
 
-    while(angleInput < 0):
-        angleInput = 360 + angleInput
+    while(angleInput < 0.0):
+        angleInput = 360.0 + angleInput
 
     #view angle 0..360
     #angle = 135
     angle = angleInput % 360
-    if angle & 90 == 0:
+    if angle % 90 == 0:
         return v2(0,0)
 
     #current found hit
