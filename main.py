@@ -123,35 +123,61 @@ def main():
 
     currentAngle = 44
     printScale = 30.0
+    currentPosition = v2(2,2)
     while True: # main game loop
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    currentAngle -= 5
+                elif event.key == pygame.K_RIGHT:
+                    currentAngle += 5
         points = [0]
         curentAngleNormal = 0
         for i in range(int(currentAngle - (FOV/2)), int(currentAngle + (FOV/2))+1):
             #print(ray(v2(2,2),i,tempMap).len())
 
-            if(ray(v2(2,2),i,tempMap).len() < 0.01):
-                dis_ = (ray(v2(2,2),i-2,tempMap).len() + ray(v2(2,2),i+2,tempMap).len())/2
+            if(ray(currentPosition,i,tempMap).len() < 0.01):
+                dis_ = (ray(currentPosition,i-2,tempMap).len() + ray(v2(2,2),i+2,tempMap).len())/2
+                #hyp = 1.0/math.cos(deg2rad(curentAngleNormal-(FOV/2)))
+                #dis_ = dis_ * 1.0/hyp
                 points.append(dis_)
                 continue
 
-            disRay = ray(v2(2,2),i,tempMap).len()
-            hyp = 1.0/math.cos(deg2rad(curentAngleNormal))
-            disRay = disRay * 1.0/hyp
+            disRay = ray(currentPosition,i,tempMap).len()
+            #hyp = 1.0/math.cos(deg2rad(curentAngleNormal-(FOV/2)))
+            #disRay = disRay * 1.0/hyp
             points.append(disRay)
             curentAngleNormal += 1
 
         for i in range(FOV):
-            pygame.draw.rect(surface, rectColor, pygame.Rect((i/FOV)*size[0], size[1]/2-((printScale*(points[i]))/2), size[0]/FOV+1, printScale*(points[i])))
+            x_ = (i/FOV)*size[0]
+            w_ = size[0]/FOV+1
+
+            h_ = printScale*(points[i])
+            """
+            hMax = size[1]-2
+            hMin = 5
+            if h_ >= hMax:
+                h_ = hMax-1
+            pre = h_ / hMax
+            pre = 1 - pre
+            h_ = pre * h_
+            if h_ <= hMin:
+                h_ = hMin
+            """
+            
+            y_ = size[1]/2-(h_/2)
+            pygame.draw.rect(surface, rectColor, pygame.Rect(x_, y_, w_, h_))
 
         pygame.display.update()
 
         #pygame.display.flip()
 
-        currentAngle += 0.1
+        #currentAngle += 0.1
+
         surface.fill((0,0,0))
 
     return
